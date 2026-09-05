@@ -179,4 +179,27 @@ export const apiClient = {
       body: JSON.stringify({ status }),
     })
   },
+
+  /**
+   * Evaluate a live student viva defense answer using Gemini.
+   */
+  async evaluateVivaDefense(
+    projectId: string,
+    question: string,
+    studentAnswer: string
+  ): Promise<{
+    score: number
+    grade: string
+    strengths: string[]
+    weaknesses: string[]
+    examinerFeedback: string
+    idealAnswerSuggestion: string
+    followUpQuestion: string
+  }> {
+    return request(`/api/projects/${projectId}/viva-evaluate`, {
+      method: 'POST',
+      body: JSON.stringify({ question, studentAnswer }),
+    })
+  },
 }
+

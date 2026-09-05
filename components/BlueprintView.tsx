@@ -20,7 +20,7 @@ export default function BlueprintView({ idea }: BlueprintViewProps) {
   const [completedPhases, setCompletedPhases] = useState<number[]>([0, 1])
   const [openVivaIndex, setOpenVivaIndex] = useState<number | null>(0)
   const [isSaved, setIsSaved] = useState(true)
-  const [downloadNotice, setDownloadNotice] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
   const [improvements, setImprovements] = useState(idea.improvementsDetailed)
   const [improvePrompt, setImprovePrompt] = useState('')
   const [isImproving, setIsImproving] = useState(false)
@@ -78,6 +78,11 @@ export default function BlueprintView({ idea }: BlueprintViewProps) {
     } finally {
       setIsImproving(false)
     }
+  }
+
+  function showToast(msg: string) {
+    setToastMessage(msg)
+    setTimeout(() => setToastMessage(null), 4000)
   }
 
   function handleDownloadSynopsis() {
@@ -169,18 +174,46 @@ ${idea.vivaQuestions
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
 
-    setDownloadNotice(true)
-    setTimeout(() => setDownloadNotice(false), 4000)
+    showToast('Capstone Synopsis downloaded successfully (.md formatted for university submission).')
+  }
+
+  function handleDownloadStarterKit() {
+    const isPython = idea.stack.some((s) => s.tools.some((t) => t.toLowerCase().includes('python') || t.toLowerCase().includes('fastapi')))
+    
+    const readmeContent = `# ${idea.title} — Starter Scaffold
+${idea.overview}
+
+## 🚀 Quick Setup
+${isPython ? '```bash\npython -m venv venv\nsource venv/bin/activate # or venv\\Scripts\\activate on Windows\npip install -r requirements.txt\npython main.py\n```' : '```bash\nnpm install\nnpm run dev\n```'}
+
+## 📦 Prescribed Stack
+${idea.stack.map(s => `- **${s.group}**: ${s.tools.join(', ')} (${s.justification})`).join('\n')}
+`
+    const scriptContent = isPython
+      ? `# ${idea.title} Entrypoint\nimport sys\n\ndef main():\n    print("Starting ${idea.title} engine...")\n    # TODO: Implement ${idea.featuresDetailed[0]?.name || 'core feature'}\n\nif __name__ == "__main__":\n    main()\n`
+      : `// ${idea.title} Entrypoint\nconsole.log("Starting ${idea.title} service...");\n`
+
+    const starterBundle = `${readmeContent}\n\n---\n\n### // main.py / index.js\n${scriptContent}`
+    
+    const blob = new Blob([starterBundle], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${idea.slug}-starter-scaffold.txt`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+
+    showToast('Starter Scaffold generated and downloaded successfully!')
   }
 
   return (
     <div className="blueprint-container">
-      {downloadNotice && (
+      {toastMessage && (
         <div className="download-toast-banner animate-in">
           <CheckCircle2 size={18} className="text-emerald-500" />
-          <span>
-            Capstone Synopsis downloaded successfully (.md formatted for university submission).
-          </span>
+          <span>{toastMessage}</span>
         </div>
       )}
 
@@ -189,6 +222,7 @@ ${idea.vivaQuestions
         isSaved={isSaved}
         onToggleSave={toggleSave}
         onDownloadSynopsis={handleDownloadSynopsis}
+        onDownloadStarterKit={handleDownloadStarterKit}
       />
 
       <section className="section-wrap detail-grid">
@@ -232,6 +266,7 @@ ${idea.vivaQuestions
           />
 
           <BlueprintVivaKit
+            projectId={idea.slug}
             vivaQuestions={idea.vivaQuestions}
             openVivaIndex={openVivaIndex}
             onToggleIndex={setOpenVivaIndex}

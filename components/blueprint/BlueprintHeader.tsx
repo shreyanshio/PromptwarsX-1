@@ -8,6 +8,7 @@ import {
   Download,
   Sparkles,
   Award,
+  Code2,
 } from 'lucide-react'
 
 interface BlueprintHeaderProps {
@@ -15,6 +16,7 @@ interface BlueprintHeaderProps {
   isSaved: boolean
   onToggleSave: () => void
   onDownloadSynopsis: () => void
+  onDownloadStarterKit: () => void
 }
 
 export const BlueprintHeader: React.FC<BlueprintHeaderProps> = ({
@@ -22,6 +24,7 @@ export const BlueprintHeader: React.FC<BlueprintHeaderProps> = ({
   isSaved,
   onToggleSave,
   onDownloadSynopsis,
+  onDownloadStarterKit,
 }) => {
   return (
     <section className="section-wrap detail-head">
@@ -69,6 +72,16 @@ export const BlueprintHeader: React.FC<BlueprintHeaderProps> = ({
           >
             <Download size={15} />
             <span>Download Synopsis (.md)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onDownloadStarterKit}
+            className="button button-secondary"
+            title="Download complete starter boilerplate code files"
+          >
+            <Code2 size={15} className="text-primary" />
+            <span>Starter Scaffold (.zip)</span>
           </button>
 
           <Link href="/dashboard" className="button button-primary">
