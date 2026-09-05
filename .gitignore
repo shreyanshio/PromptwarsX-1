@@ -1,0 +1,19 @@
+# Node dependencies
+node_modules/
+project-spark/node_modules/
+
+# Next.js build output
+.next/
+project-spark/.next/
+
+# Environment files
+.env*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vercel / v0 files
+.vercel/
+.snowflake/
+.v0-trash/
