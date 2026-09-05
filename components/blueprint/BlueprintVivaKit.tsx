@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react'
+import React, { useState } from 'react'
 import { VivaQuestion } from '@/lib/ideas'
 import { apiClient } from '@/lib/api-client'
 import { HelpCircle, ChevronDown, Zap, Sparkles, Award, ShieldAlert, RefreshCw } from 'lucide-react'
@@ -74,6 +74,9 @@ export const BlueprintVivaKit: React.FC<BlueprintVivaKitProps> = ({
             <div key={idx} className="viva-accordion-item">
               <button
                 type="button"
+                id={`viva-trigger-${idx}`}
+                aria-expanded={isOpen}
+                aria-controls={`viva-content-${idx}`}
                 onClick={() => onToggleIndex(isOpen ? null : idx)}
                 className="viva-accordion-trigger"
               >
@@ -85,7 +88,7 @@ export const BlueprintVivaKit: React.FC<BlueprintVivaKitProps> = ({
               </button>
 
               {isOpen && (
-                <div className="viva-accordion-content animate-in">
+                <div id={`viva-content-${idx}`} role="region" aria-labelledby={`viva-trigger-${idx}`} className="viva-accordion-content animate-in">
                   <div className="expected-answer-box">
                     <strong>Model Answer:</strong>
                     <p>{vq.expectedAnswer}</p>

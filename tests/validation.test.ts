@@ -51,4 +51,36 @@ describe('Zod Validation Schemas', () => {
       }).success
     ).toBe(true)
   })
+
+  it('should validate viva examiner input schema correctly', async () => {
+    const { vivaExaminerInputSchema, vivaEvaluationSchema } = await import('@/lib/viva-validation')
+    expect(
+      vivaExaminerInputSchema.safeParse({
+        projectId: 'attendai',
+        question: 'Explain the pipeline',
+        studentAnswer: 'Uses OpenCV and ONNX runtime for on-device inference.',
+      }).success
+    ).toBe(true)
+
+    expect(
+      vivaExaminerInputSchema.safeParse({
+        projectId: '',
+        question: '',
+        studentAnswer: '',
+      }).success
+    ).toBe(false)
+
+    expect(
+      vivaEvaluationSchema.safeParse({
+        score: 92,
+        grade: 'Strong Pass (Distinction)',
+        strengths: ['Great latency profile'],
+        weaknesses: ['Needs battery analysis'],
+        examinerFeedback: 'Impressive answer.',
+        idealAnswerSuggestion: 'Mention FPS metrics.',
+        followUpQuestion: 'How does it scale?',
+      }).success
+    ).toBe(true)
+  })
 })
+
