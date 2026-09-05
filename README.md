@@ -1,4 +1,4 @@
-# ProjectSpark — AI-Powered Final-Year Project Architect
+﻿# ProjectSpark — AI-Powered Final-Year Project Architect
 
 > **An intelligent capstone architect transforming student skills and domain passions into practical, defensible, production-grade engineering projects.**
 
@@ -6,97 +6,52 @@
 [![React 19](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev/)
 [![TypeScript 5.7](https://img.shields.io/badge/TypeScript-Strict_Mode-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
-[![Build Passing](https://img.shields.io/badge/Build-Passing-brightgreen)]()
+[![Vitest Tests](https://img.shields.io/badge/Tests-19%20Passed-brightgreen)](https://vitest.dev/)
 
 ---
 
 ## 🎯 Problem Statement
-> *"Build an AI-powered platform that helps final-year students to generate project ideas based on their interests and skills that provide guidance on features, technologies, development steps, and improvements to turn the idea into a practical project."*
+> *"build an AI powered platform that helps final-year students to generate project ideas based on their interests and skills that provide guidance on features, technologies, development steps, and improvements to turn the idea into a practical project."*
 
 ---
 
-## 🏛 System Architecture & Capabilities
+## 🏛 System Architecture & Data Flow
 
-ProjectSpark provides end-to-end guidance designed specifically for engineering capstone requirements:
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        PROJECTSPARK ARCHITECTURE                       │
-├────────────────────────────────────────────────────────────────────────┤
-│  01. Profile Intake         │ Domain Passions, Skills, Timeline, Team  │
-│  02. Tailored Ideas Engine  │ High-Relevance Matching & Rationale      │
-│  03. Features Guidance      │ Core MVP (P0) vs Advanced Distinctions   │
-│  04. Technologies Guidance  │ Layered Architecture & Rationale Stack   │
-│  05. Development Roadmap    │ 4-Phase Capstone Timeline & Deliverables │
-│  06. Improvements & Defense │ Hardening, Benchmarking & Viva Prep Kit  │
-└────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## ✨ Key Capabilities & Highlights
-
-1. **⚡ Instant Demo Access (`/login`)**:
-   - Zero registration friction: click **"Continue with Demo Account"** to immediately explore the system with a pre-configured student profile (*Alex Chen · B.Tech CSE*).
-   - Full dark and light theme synchronization persisted across sessions.
-2. **Interactive Capstone Profile Intake (`/generate`)**:
-   - Domain interest matrix: AI, Computer Vision, Healthcare, Cybersecurity, IoT, DevTools.
-   - Categorized skills breakdown: Languages, Frameworks, Runtimes, AI toolkits.
-   - Scope boundary setting: 4-6 weeks (Sprint), 10-12 weeks (Semester), Full Year.
-3. **Curated Ideas & Recommendation Engine (`/generate/results`)**:
-   - Filter by domain and difficulty level.
-   - Transparent "Why this matches you" technical rationale for each recommendation.
-4. **Capstone Blueprint Architect (`/generate/results/[slug]`)**:
-   - **Core MVP vs Advanced Distinctions** feature toggle.
-   - **Layered Architecture Guidance**: Explicit architectural justifications for UI, API, AI/Model, and Database tools.
-   - **Interactive 4-Phase Roadmap**: Interactive milestone completion tracking.
-   - **Practical Hardening**: Scalability, Security, Edge-Case Resilience, and Academic Rigor tips.
-   - **Exclusive Viva Defense Kit**: Accordion of tough viva examiner questions, model answers, and defense strategies.
-   - **📥 1-Click Download Capstone Synopsis (.md)**: Instantly exports a formatted, university-ready project synopsis.
-5. **Student Command Center (`/dashboard`)**:
-   - Live **Academic Defense Readiness Dial** that recalculates as milestones are ticked.
-   - Real-time defense checklist and saved project overview.
-
----
-
-## 🚀 Quick Start (Local Setup)
-
-```powershell
-# Navigate into the project folder
-cd project-spark
-
-# Install dependencies (Node 20+ required)
-npm install
-
-# Run the local development server
-npm run dev
-
-# Open in browser: http://localhost:3000
+```mermaid
+graph TD
+    A[Student / Browser] -->|HTTP / React 19 UI| B[Next.js 16 App Router]
+    B -->|Bearer Auth Header| C[API Route Handlers]
+    C -->|Verify ID Token| D[Firebase Admin SDK]
+    C -->|Zod Schema Validation| E[Domain Service Layer]
+    E -->|Structured Prompt & JSON Schema| F[Google Gemini 2.5 Flash]
+    E -->|User-Isolated Queries| G[Cloud Firestore]
+    F -->|Validated Capstone Blueprint| E
+    G -->|Saved Projects & Milestones| E
+    E -->|Normalized API Response| C
+    C -->|JSON Output| A
 ```
 
-### Production Build & Verification
-```powershell
-cd project-spark
-npm run build
-```
-*(Build compiles with 0 errors and prerenders all static & dynamic routes).*
-
 ---
 
-## 🧭 Quick Product Walkthrough (Under 2 Minutes)
+## ✨ Key Capabilities
 
-1. Open `/login` and click **"Continue with Demo Account"**.
-2. Visit `/generate` and explore the 4-step intake wizard.
-3. In `/generate/results`, filter by domain or difficulty and select **AttendAI**.
-4. In `/generate/results/attendai`:
-   - Toggle between **Core MVP** and **Distinction** features.
-   - Check the **Technologies Guidance** cards to read the architectural justifications.
-   - Check an item in the **Roadmap** checklist.
-   - Open a question in the **Viva Defense Kit**.
-   - Click **"Download Synopsis (.md)"** to get the university submission document.
-5. Visit `/dashboard` to see the live **Viva Readiness Dial**.
-
----
+1. **Interactive Capstone Profile Intake (`/generate`)**:
+   - Captures domain interests (AI, Computer Vision, Healthcare, Cybersecurity, IoT, DevTools).
+   - Categorized skills breakdown (Languages, Frameworks, Backend, AI runtimes).
+   - Practical constraints: Timeline (4-6 weeks to 1 year) and Team scope.
+2. **AI-Powered Tailored Ideas Engine (`/generate/results`)**:
+   - Structured multi-project generation via Google Gemini 2.5 Flash (`@google/genai`).
+   - Algorithmic matching with transparent "Why this matches you" technical rationale.
+3. **Capstone Blueprint Architect (`/generate/results/[slug]`)**:
+   - **Features Guidance**: Toggle between Core MVP (P0) and Distinction (P1) features.
+   - **Technologies Guidance**: Explicit architectural justifications for every layer (UI, API, AI, Database).
+   - **Development Steps**: 4-Phase capstone milestone roadmap aligned with university project reviews.
+   - **Practical Improvements**: Hardening suggestions & real-time Gemini AI refinement assistant.
+   - **Viva Defense Kit**: Curated examiner questions, technical model answers, and defense strategies.
+   - **📥 1-Click Capstone Synopsis (.md)**: Exports formatted, university-ready markdown documentation.
+4. **Student Command Center (`/dashboard`)**:
+   - Live **Academic Defense Readiness Dial** dynamically calculated from checked deliverables.
+   - Real-time milestone tracker and saved capstone portfolio.
 
 ---
 
@@ -107,5 +62,51 @@ npm run build
 - **AI Core**: Google Gemini 2.5 Flash (`@google/genai`)
 - **Backend & Auth**: Next.js API Route Handlers, Firebase Auth, Cloud Firestore
 - **Type Safety**: TypeScript Strict Mode, Zod v4 schemas
-- **Testing**: Vitest with unit & integration test coverage
+- **Testing**: Vitest v5 with v8 code coverage reporting
 
+---
+
+## 🚀 Quick Start (Local Setup)
+
+```powershell
+# 1. Clone the repository and install dependencies
+npm install
+
+# 2. Configure environment variables
+cp .env.example .env.local
+# Add your GEMINI_API_KEY and Firebase credentials to .env.local
+
+# 3. Run development server
+npm run dev
+
+# 4. Open in browser
+# http://localhost:3000
+```
+
+### Production Verification Commands
+
+```powershell
+# Run TypeScript Typecheck
+npx tsc --noEmit
+
+# Run ESLint Linting
+npm run lint
+
+# Run Vitest Automated Test Suite with Coverage
+npm run test:coverage
+
+# Run Production Standalone Build
+npm run build
+```
+
+---
+
+## 🐳 Docker & Cloud Run Deployment
+
+```powershell
+# Build multi-stage production container
+docker build -t projectspark-app .
+
+# Run container locally
+docker run -p 8080:8080 --env-file .env.local projectspark-app
+```
