@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { ideas } from '@/lib/ideas'
 import { getCurrentUser, UserProfile } from '@/lib/auth'
+import ThemeToggle from '@/components/ThemeToggle'
 
 type IntakeState = {
   interests: string[]
@@ -127,9 +128,10 @@ export default function GenerateWizard() {
         <div className="flex items-center gap-3">
           {user && (
             <span className="user-badge-pill">
-              <span className="user-badge-dot" /> {user.name} ({user.isGuest ? 'Guest Evaluator' : 'Student'})
+              <span className="user-badge-dot" /> {user.name}
             </span>
           )}
+          <ThemeToggle />
           <span className="wizard-count">STEP {step + 1} OF 4</span>
         </div>
       </header>
@@ -141,7 +143,7 @@ export default function GenerateWizard() {
           </Link>
           <span className="live-match-pill">
             <Sparkles size={13} className="text-amber-400" />
-            <span>{matchedCount} Matched Capstones Found</span>
+            <span>Recommended Capstones</span>
           </span>
         </div>
 
@@ -155,7 +157,7 @@ export default function GenerateWizard() {
           {step === 0 && (
             <div className="wizard-step-body animate-in">
               <div className="eyebrow">
-                <Sparkles size={14} /> Pillar 1 · Domain Passions
+                <Sparkles size={14} /> Step 1 · Domain Interests
               </div>
               <h1>What engineering domains excite you?</h1>
               <p>Select all domains you'd be proud to defend during your final-year viva examination.</p>
@@ -187,7 +189,7 @@ export default function GenerateWizard() {
           {step === 1 && (
             <div className="wizard-step-body animate-in">
               <div className="eyebrow">
-                <Code2 size={14} /> Pillar 1 · Technical Stack &amp; Skills
+                <Code2 size={14} /> Step 2 · Technical Stack &amp; Skills
               </div>
               <h1>What skills do you bring to the table?</h1>
               <p>
@@ -322,7 +324,7 @@ export default function GenerateWizard() {
             >
               {step === 3 ? (
                 <>
-                  Generate Capstone Architectures <Sparkles size={16} />
+                  View Tailored Projects <Sparkles size={16} />
                 </>
               ) : (
                 <>

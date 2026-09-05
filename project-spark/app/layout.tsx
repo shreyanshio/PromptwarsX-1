@@ -17,9 +17,9 @@ const display = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: 'ProjectSpark — Turn your final year into a real build',
+  title: 'ProjectSpark — Final-Year Engineering Capstone Architect',
   description:
-    'ProjectSpark matches final-year students to project ideas based on their interests and skills, then hands over the features, tech stack, and build plan to make it real.',
+    'ProjectSpark helps final-year students turn their interests and skills into practical, defensible capstone projects with full feature scope, modern tech stacks, and step-by-step roadmaps.',
   generator: 'ProjectSpark',
   icons: {
     icon: [
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: '(prefers-color-scheme: light)', color: '#f1f4f2' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d1416' },
   ],
 }
 
@@ -54,7 +54,23 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
+    <html lang="en" className={`dark ${sans.variable} ${display.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var t = localStorage.getItem('projectspark_theme');
+                if (t === 'light') {
+                  document.documentElement.classList.remove('dark');
+                } else {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

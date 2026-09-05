@@ -21,10 +21,10 @@ Final-year undergraduate and graduate engineering students struggle with their c
    - Solo developers or capstone project teams (2–4 members).
    - Have mixed skill levels (e.g., knows Python & basic web, wants to learn Generative AI or Computer Vision).
    - Facing imminent submission deadlines, synopsis approvals, and external viva defenses.
-2. **Academic Evaluators / Viva Examiners (Secondary)**:
+2. **Academic Evaluators / Project Mentors (Secondary)**:
    - Demand technical depth, clear system boundaries, realistic timelines, and defensible architectures.
-3. **Hackathon Evaluators / Judges (Immediate)**:
-   - Need frictionless demo capability (1-click Guest Login), immediate time-to-value, visible AI reasoning, and tight alignment with the 6 problem pillars.
+3. **Engineering Faculty & Review Committees**:
+   - Assess novelty, feasibility, practical implementation rigor, and clear deliverables.
 
 ---
 

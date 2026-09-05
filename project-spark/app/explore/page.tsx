@@ -4,6 +4,7 @@ import { Search, ArrowRight } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { ideas, type Accent } from '@/lib/ideas'
 import { getCurrentUser, UserProfile } from '@/lib/auth'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 type GalleryItem = {
   title: string
@@ -63,11 +64,12 @@ export default function Explore() {
         <div className="flex items-center gap-3">
           {user ? (
             <span className="user-badge-pill">
-              <span className="user-badge-dot" /> {user.name} ({user.isGuest ? 'Guest' : 'Student'})
+              <span className="user-badge-dot" /> {user.name}
             </span>
           ) : (
             <Link href="/login" className="nav-login">Sign in</Link>
           )}
+          <ThemeToggle />
           <Link href="/generate" className="button button-small">Generate <ArrowRight size={14}/></Link>
         </div>
       </header>

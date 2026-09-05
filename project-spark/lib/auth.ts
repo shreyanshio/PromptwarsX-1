@@ -3,7 +3,7 @@
 export type UserProfile = {
   name: string
   email: string
-  role: 'student' | 'evaluator' | 'guest'
+  role: 'student' | 'guest'
   degree: string
   year: string
   avatar: string
@@ -12,10 +12,10 @@ export type UserProfile = {
 
 export const GUEST_USER: UserProfile = {
   name: 'Alex Chen',
-  email: 'evaluator.alex@hack2skill.demo',
-  role: 'evaluator',
+  email: 'alex.chen@university.edu',
+  role: 'guest',
   degree: 'B.Tech Computer Science & Engineering',
-  year: 'Final Year (Capstone Cohort)',
+  year: 'Final Year CSE (Capstone)',
   avatar: 'AC',
   isGuest: true,
 }

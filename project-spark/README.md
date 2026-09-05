@@ -1,7 +1,6 @@
 # ProjectSpark — AI-Powered Final-Year Project Architect
 
-> **Hack2Skill Build With AI Submission**  
-> *Engineered to achieve >95% score against the official evaluation rubric.*
+> **An intelligent capstone architect transforming student skills and domain passions into practical, defensible, production-grade engineering projects.**
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.3.3-black?logo=next.js)](https://nextjs.org/)
 [![React 19](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev/)
@@ -11,25 +10,25 @@
 
 ---
 
-## 🎯 Official Problem Statement
+## 🎯 Problem Statement
 > *"Build an AI-powered platform that helps final-year students to generate project ideas based on their interests and skills that provide guidance on features, technologies, development steps, and improvements to turn the idea into a practical project."*
 
 ---
 
-## 🏛 The 6 Core Pillars
+## 🏛 System Architecture & Capabilities
 
-ProjectSpark is strictly engineered around the 6 core pillars demanded by the Problem Statement:
+ProjectSpark provides end-to-end guidance designed specifically for engineering capstone requirements:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        PROJECTSPARK ARCHITECTURE                       │
 ├────────────────────────────────────────────────────────────────────────┤
 │  01. Profile Intake         │ Domain Passions, Skills, Timeline, Team  │
-│  02. Matched AI Ideas       │ Algorithmic Fit %, Rationale Tags        │
-│  03. Features Guidance      │ P0 (Core Viva MVP) vs P1 (Distinctions)  │
+│  02. Tailored Ideas Engine  │ High-Relevance Matching & Rationale      │
+│  03. Features Guidance      │ Core MVP (P0) vs Advanced Distinctions   │
 │  04. Technologies Guidance  │ Layered Architecture & Rationale Stack   │
 │  05. Development Roadmap    │ 4-Phase Capstone Timeline & Deliverables │
-│  06. Improvements & Viva    │ Production Hardening & Viva Defense Kit  │
+│  06. Improvements & Defense │ Hardening, Benchmarking & Viva Prep Kit  │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -37,27 +36,26 @@ ProjectSpark is strictly engineered around the 6 core pillars demanded by the Pr
 
 ## ✨ Key Capabilities & Highlights
 
-1. **⚡ 1-Click Guest Evaluator Access (`/login`)**:
-   - Built specifically for Hack2Skill judges.
-   - Zero registration or email verification barrier.
-   - Click **"Continue as Guest Evaluator"** to load a pre-configured Final-Year Student profile (*Alex Chen · B.Tech CSE*).
+1. **⚡ Instant Demo Access (`/login`)**:
+   - Zero registration friction: click **"Continue with Demo Account"** to immediately explore the system with a pre-configured student profile (*Alex Chen · B.Tech CSE*).
+   - Full dark and light theme synchronization persisted across sessions.
 2. **Interactive Capstone Profile Intake (`/generate`)**:
    - Domain interest matrix: AI, Computer Vision, Healthcare, Cybersecurity, IoT, DevTools.
    - Categorized skills breakdown: Languages, Frameworks, Runtimes, AI toolkits.
    - Scope boundary setting: 4-6 weeks (Sprint), 10-12 weeks (Semester), Full Year.
-3. **Ranked Ideas Gallery (`/generate/results`)**:
-   - Filter by domain and difficulty.
-   - Algorithmic match percentage and transparent "Why this matches you" rationale.
+3. **Curated Ideas & Recommendation Engine (`/generate/results`)**:
+   - Filter by domain and difficulty level.
+   - Transparent "Why this matches you" technical rationale for each recommendation.
 4. **Capstone Blueprint Architect (`/generate/results/[slug]`)**:
-   - **P0 Core MVP vs P1 Advanced Distinctions** feature toggle.
+   - **Core MVP vs Advanced Distinctions** feature toggle.
    - **Layered Architecture Guidance**: Explicit architectural justifications for UI, API, AI/Model, and Database tools.
-   - **Interactive 4-Phase Roadmap**: Interactive milestone completion checkboxes.
+   - **Interactive 4-Phase Roadmap**: Interactive milestone completion tracking.
    - **Practical Hardening**: Scalability, Security, Edge-Case Resilience, and Academic Rigor tips.
    - **Exclusive Viva Defense Kit**: Accordion of tough viva examiner questions, model answers, and defense strategies.
    - **📥 1-Click Download Capstone Synopsis (.md)**: Instantly exports a formatted, university-ready project synopsis.
 5. **Student Command Center (`/dashboard`)**:
-   - Live **Viva Readiness Score Dial** that recalculates as milestones are ticked.
-   - Real-time defense checklist and saved project switches.
+   - Live **Academic Defense Readiness Dial** that recalculates as milestones are ticked.
+   - Real-time defense checklist and saved project overview.
 
 ---
 
@@ -85,13 +83,13 @@ npm run build
 
 ---
 
-## 🧭 Evaluator Walkthrough (Under 2 Minutes)
+## 🧭 Quick Product Walkthrough (Under 2 Minutes)
 
-1. Open `/login` and click **"⚡ Continue as Guest Evaluator (Instant)"**.
+1. Open `/login` and click **"Continue with Demo Account"**.
 2. Visit `/generate` and explore the 4-step intake wizard.
 3. In `/generate/results`, filter by domain or difficulty and select **AttendAI**.
 4. In `/generate/results/attendai`:
-   - Toggle between **P0: Core MVP** and **P1: Distinction** features.
+   - Toggle between **Core MVP** and **Distinction** features.
    - Check the **Technologies Guidance** cards to read the architectural justifications.
    - Check an item in the **Roadmap** checklist.
    - Open a question in the **Viva Defense Kit**.

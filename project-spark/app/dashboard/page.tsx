@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { getIdea, ideas } from '@/lib/ideas'
 import { getCurrentUser, UserProfile, GUEST_USER } from '@/lib/auth'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserProfile>(GUEST_USER)
@@ -49,8 +50,9 @@ export default function DashboardPage() {
         </Link>
         <div className="flex items-center gap-3">
           <span className="user-badge-pill">
-            <span className="user-badge-dot" /> {user.name} ({user.isGuest ? 'Guest Evaluator' : 'Student'})
+            <span className="user-badge-dot" /> {user.name}
           </span>
+          <ThemeToggle />
           <Link href="/generate" className="button button-primary button-small">
             <Plus size={14} /> New Spark
           </Link>
@@ -135,7 +137,7 @@ export default function DashboardPage() {
               href={`/generate/results/${active.slug}`}
               className="button button-primary"
             >
-              <span>View Full 6-Pillar Blueprint</span>
+              <span>View Full Project Blueprint</span>
               <ArrowRight size={15} />
             </Link>
             <Link
@@ -197,7 +199,7 @@ export default function DashboardPage() {
                     <span className="text-xs text-muted">{item.category}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="chip-score">{item.match}%</span>
+                    <span className="chip-score">{item.difficulty}</span>
                     <Link
                       href={`/generate/results/${item.slug}`}
                       className="text-link text-xs"

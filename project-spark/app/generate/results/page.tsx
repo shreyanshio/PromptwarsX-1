@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { ideas, Idea } from '@/lib/ideas'
 import { getCurrentUser, UserProfile } from '@/lib/auth'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function ResultsPage() {
   const [user, setUser] = useState<UserProfile | null>(null)
@@ -65,11 +66,12 @@ export default function ResultsPage() {
         <div className="flex items-center gap-3">
           {user && (
             <span className="user-badge-pill">
-              <span className="user-badge-dot" /> {user.name} ({user.isGuest ? 'Guest Evaluator' : 'Student'})
+              <span className="user-badge-dot" /> {user.name}
             </span>
           )}
+          <ThemeToggle />
           <Link href="/dashboard" className="text-link text-small">
-            Your Dashboard <ArrowRight size={14} />
+            Dashboard <ArrowRight size={14} />
           </Link>
         </div>
       </header>
@@ -79,14 +81,15 @@ export default function ResultsPage() {
           <Link href="/generate" className="text-link">
             <ArrowLeft size={15} /> Refine your interests &amp; skills
           </Link>
-          <span className="nav-eval-badge">
-            <Sparkles size={12} /> Pillar 2 · AI Idea Generation
+          <span className="live-match-pill">
+            <Sparkles size={12} className="text-amber-500" />
+            <span>Curated Architectures</span>
           </span>
         </div>
 
         <h1>Tailored Capstones Worth Defending.</h1>
         <p>
-          Ranked by algorithmic fit against your domain interests, technical skills, and college viva criteria.
+          Architected based on your domain interests, technical skills, and college viva criteria.
           Every project includes features, stack justification, build phases, and viva prep.
         </p>
 
@@ -150,9 +153,9 @@ export default function ResultsPage() {
               <article className="result-card-rich" key={idea.slug}>
                 <div className="result-card-sidebar">
                   <span className="result-index">0{i + 1}</span>
-                  <span className="result-match-score">
-                    <Sparkles size={13} className="text-amber-500" />
-                    <strong>{idea.match}%</strong> fit
+                  <span className="live-match-pill">
+                    <Sparkles size={12} className="text-amber-500" />
+                    <span>Recommended</span>
                   </span>
                 </div>
 

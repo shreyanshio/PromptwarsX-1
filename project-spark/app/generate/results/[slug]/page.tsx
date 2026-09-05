@@ -4,6 +4,8 @@ import { ArrowRight } from 'lucide-react'
 import { getIdea, ideas } from '@/lib/ideas'
 import BlueprintView from '@/components/BlueprintView'
 
+import ThemeToggle from '@/components/ThemeToggle'
+
 export function generateStaticParams() {
   return ideas.map((idea) => ({ slug: idea.slug }))
 }
@@ -37,6 +39,7 @@ export default async function IdeaDetailPage({
           <Link href="/" className="brand-mark" aria-label="ProjectSpark home">
             <span className="brand-glyph">✦</span> Project<span>Spark</span>
           </Link>
+          <ThemeToggle />
         </header>
         <div className="not-found-panel">
           <h1>That spark fizzled out.</h1>
@@ -59,6 +62,7 @@ export default async function IdeaDetailPage({
           <Link href="/generate/results" className="text-link text-small">
             All Ideas
           </Link>
+          <ThemeToggle />
           <Link href="/dashboard" className="text-link text-small">
             Dashboard <ArrowRight size={14} />
           </Link>

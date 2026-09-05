@@ -14,12 +14,12 @@ import {
   User,
   Eye,
   EyeOff,
-  Check,
   Code2,
   Cpu,
   Layers,
 } from 'lucide-react'
 import { GUEST_USER, setCurrentUser, getCurrentUser, UserProfile } from '@/lib/auth'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -30,30 +30,30 @@ export default function LoginPage() {
   const [name, setName] = useState('')
   const [skills, setSkills] = useState('Python, React, Machine Learning')
   const [isLoading, setIsLoading] = useState(false)
-  const [currentUser, setUserState] = useState<UserProfile | null>(null)
+  const [, setUserState] = useState<UserProfile | null>(null)
   const [activeHighlight, setActiveHighlight] = useState(0)
 
   const highlights = [
     {
       title: 'AttendAI · Edge Computer Vision',
-      match: '96% Fit',
-      detail: 'Anti-spoofing face recognition with local SQLite offline buffering for college classrooms.',
+      badge: 'Edge Vision + Anti-Spoofing',
+      detail: 'Face recognition pipeline with local SQLite offline buffering for college classrooms.',
       icon: <Cpu size={18} className="text-amber-400" />,
-      tag: 'P0 Core MVP Ready',
+      tag: 'Core MVP Ready',
     },
     {
       title: 'MediLens AI · Clinical NLP',
-      match: '93% Fit',
-      detail: 'Multimodal lab test parser with OpenFDA drug contraindication detection and visual ranges.',
+      badge: 'Multimodal + OpenFDA',
+      detail: 'Lab report parser with drug-drug contraindication checks and visual biomarker ranges.',
       icon: <Layers size={18} className="text-indigo-400" />,
-      tag: 'OpenFDA Integrated',
+      tag: 'Healthcare NLP',
     },
     {
       title: 'CodeMentor AI · DevTools Agent',
-      match: '95% Fit',
-      detail: 'AST-grounded vulnerability scanner and Socratic pedagogy coach for student repositories.',
+      badge: 'AST Parsing + Sandboxing',
+      detail: 'Deterministic vulnerability scanner and Socratic code reviewer for student repositories.',
       icon: <Code2 size={18} className="text-emerald-400" />,
-      tag: 'AST + Docker Sandbox',
+      tag: 'Docker Sandbox',
     },
   ]
 
@@ -64,7 +64,7 @@ export default function LoginPage() {
     }
     const interval = setInterval(() => {
       setActiveHighlight((prev) => (prev + 1) % highlights.length)
-    }, 4000)
+    }, 4500)
     return () => clearInterval(interval)
   }, [highlights.length])
 
@@ -73,7 +73,7 @@ export default function LoginPage() {
     setTimeout(() => {
       setCurrentUser(GUEST_USER)
       router.push('/dashboard')
-    }, 600)
+    }, 500)
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -91,7 +91,7 @@ export default function LoginPage() {
     setTimeout(() => {
       setCurrentUser(user)
       router.push('/generate')
-    }, 700)
+    }, 600)
   }
 
   return (
@@ -110,9 +110,7 @@ export default function LoginPage() {
           <span className="brand-glyph">✦</span> Project<span>Spark</span>
         </Link>
         <div className="login-nav-meta">
-          <span className="nav-eval-badge">
-            <Sparkles size={13} /> Hack2Skill Evaluator Mode
-          </span>
+          <ThemeToggle />
           <Link href="/" className="text-link text-small">
             Back to Home
           </Link>
@@ -123,35 +121,34 @@ export default function LoginPage() {
       <div className="login-canvas">
         {/* Left Col: High-Performance Glass Card */}
         <div className="login-card-panel">
-          {/* Dedicated Evaluator Quick-Bypass Card */}
-          <div className="guest-banner-card">
-            <div className="guest-banner-header">
-              <span className="guest-pulse-dot" />
-              <div className="guest-badge-title">
-                <strong>EVALUATOR 1-CLICK ACCESS</strong>
-                <small>No registration or email verification required</small>
+          {/* Demo Mode Quick Access */}
+          <div className="demo-banner-card">
+            <div className="demo-banner-header">
+              <span className="demo-pulse-dot" />
+              <div className="demo-badge-title">
+                <strong>INSTANT DEMO WORKSPACE</strong>
+                <small>Explore the complete platform without creating an account</small>
               </div>
-              <span className="pill-tag">&gt;95% Target</span>
             </div>
-            <p className="guest-banner-desc">
-              Judges and evaluators can instantly enter with a pre-configured Final-Year Student profile (
-              <strong>Alex Chen · B.Tech CSE</strong>) to test the 6-pillar capstone architect immediately.
+            <p className="demo-banner-desc">
+              Want to see how project generation, stack recommendations, and roadmaps work? Launch
+              directly into an active student workspace (<strong>Alex Chen · B.Tech CSE</strong>).
             </p>
             <button
               type="button"
               onClick={handleGuestAccess}
               disabled={isLoading}
-              className="guest-action-button"
-              aria-label="Continue as Guest Evaluator"
+              className="demo-action-button"
+              aria-label="Continue with Demo Account"
             >
               <Zap size={17} className="text-amber-400" />
-              <span>{isLoading ? 'Configuring Session...' : 'Continue as Guest Evaluator (Instant)'}</span>
+              <span>{isLoading ? 'Setting up workspace...' : 'Continue with Demo Account'}</span>
               <ArrowRight size={16} />
             </button>
           </div>
 
           <div className="auth-card-divider">
-            <span>or sign in with university credentials</span>
+            <span>or sign in with university email</span>
           </div>
 
           {/* Tab Selector */}
@@ -260,8 +257,8 @@ export default function LoginPage() {
               className="button button-primary auth-submit-button"
             >
               {isLoading ? (
-                <span className="flex-center gap-2">
-                  <span className="spinner-dot" /> Authenticating...
+                <span className="flex items-center justify-center gap-2">
+                  <span>Authenticating...</span>
                 </span>
               ) : tab === 'signin' ? (
                 <>
@@ -277,7 +274,7 @@ export default function LoginPage() {
 
           <div className="auth-footer-note">
             <ShieldCheck size={14} className="text-emerald-500 inline-block mr-1" />
-            <span>Encrypted local session. Full compliance with college viva privacy requirements.</span>
+            <span>Encrypted local session. Designed for university capstone workflows.</span>
           </div>
         </div>
 
@@ -292,7 +289,7 @@ export default function LoginPage() {
             </h2>
             <p>
               ProjectSpark is calibrated against real engineering examination rubrics. It ensures your
-              capstone project possesses genuine technical depth, clear system boundaries, and an unshakeable viva defense.
+              capstone project has genuine technical depth, clear system boundaries, and an unshakeable viva defense.
             </p>
           </div>
 
@@ -306,8 +303,8 @@ export default function LoginPage() {
                   <span className="highlight-sub">{highlights[activeHighlight].tag}</span>
                 </div>
               </div>
-              <span className="highlight-score-badge">
-                <Sparkles size={12} /> {highlights[activeHighlight].match}
+              <span className="highlight-badge">
+                <Sparkles size={12} /> {highlights[activeHighlight].badge}
               </span>
             </div>
 
@@ -326,30 +323,30 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* 6-Pillar Summary Pill Grid */}
-          <div className="pillars-grid-mini">
-            <div className="pillar-item-mini">
-              <span className="pillar-num">01</span>
-              <span>Interests &amp; Skills Intake</span>
+          {/* Architecture Capabilities Grid */}
+          <div className="capabilities-grid-mini">
+            <div className="capability-item-mini">
+              <span className="capability-icon">✦</span>
+              <span>Skills &amp; Domain Intake</span>
             </div>
-            <div className="pillar-item-mini">
-              <span className="pillar-num">02</span>
-              <span>Matched AI Idea Generation</span>
+            <div className="capability-item-mini">
+              <span className="capability-icon">✦</span>
+              <span>Curated Capstone Ideas</span>
             </div>
-            <div className="pillar-item-mini">
-              <span className="pillar-num">03</span>
-              <span>P0 (MVP) vs P1 Features</span>
+            <div className="capability-item-mini">
+              <span className="capability-icon">✦</span>
+              <span>Core MVP &amp; Advanced Scope</span>
             </div>
-            <div className="pillar-item-mini">
-              <span className="pillar-num">04</span>
-              <span>Layered Tech Guidance</span>
+            <div className="capability-item-mini">
+              <span className="capability-icon">✦</span>
+              <span>Layered Stack Guidance</span>
             </div>
-            <div className="pillar-item-mini">
-              <span className="pillar-num">05</span>
-              <span>4-Phase Capstone Roadmap</span>
+            <div className="capability-item-mini">
+              <span className="capability-icon">✦</span>
+              <span>Milestone Roadmap</span>
             </div>
-            <div className="pillar-item-mini">
-              <span className="pillar-num">06</span>
+            <div className="capability-item-mini">
+              <span className="capability-icon">✦</span>
               <span>Viva Defense Prep Kit</span>
             </div>
           </div>

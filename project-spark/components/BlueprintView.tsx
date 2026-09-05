@@ -154,8 +154,8 @@ ${idea.vivaQuestions
             <ArrowLeft size={15} /> All Matched Ideas
           </Link>
           <div className="flex items-center gap-2">
-            <span className="nav-eval-badge">
-              <Sparkles size={12} /> Complete 6-Pillar Blueprint
+            <span className="tag">
+              Full Project Blueprint
             </span>
           </div>
         </div>
@@ -167,7 +167,7 @@ ${idea.vivaQuestions
         <div className="detail-meta-bar">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="match-chip">
-              <Sparkles size={14} className="text-amber-500" /> {idea.match}% Match
+              <Sparkles size={14} className="text-amber-500" /> Recommended for Your Stack
             </span>
             <span className="meta-badge">Difficulty: {idea.difficulty}</span>
             <span className="meta-badge">Duration: {idea.estimatedWeeks} Weeks</span>
@@ -217,7 +217,7 @@ ${idea.vivaQuestions
             <div className="panel-header">
               <div>
                 <h2>Features Guidance &amp; Scope Boundary</h2>
-                <small className="text-muted">Pillar 3: Core Viva MVP vs Advanced Distinctions</small>
+                <small className="text-muted">Core Viva MVP vs Advanced Distinctions</small>
               </div>
 
               <div className="feature-tab-pill">
@@ -274,7 +274,7 @@ ${idea.vivaQuestions
             <div className="panel-header">
               <div>
                 <h2>Development Steps &amp; Milestone Roadmap</h2>
-                <small className="text-muted">Pillar 5: Interactive 4-Phase Capstone Timeline ({progressPct}% Complete)</small>
+                <small className="text-muted">Interactive 4-Phase Capstone Timeline ({progressPct}% Complete)</small>
               </div>
               <span className="timeline-badge">
                 <Calendar size={13} /> {idea.estimatedWeeks} Weeks Total
@@ -337,7 +337,7 @@ ${idea.vivaQuestions
             <div className="panel-header">
               <div>
                 <h2>Technologies Guidance</h2>
-                <small className="text-muted">Pillar 4: Layered Architecture &amp; Rationale</small>
+                <small className="text-muted">Layered Architecture &amp; Rationale</small>
               </div>
             </div>
 
@@ -360,12 +360,12 @@ ${idea.vivaQuestions
             </div>
           </div>
 
-          {/* Pillar 6: Practical Improvements & Hardening */}
+          {/* Practical Improvements & Hardening */}
           <div className="improvements-card-panel mt-6">
             <div className="panel-header">
               <div>
                 <h2>Practical Improvements</h2>
-                <small className="text-muted">Pillar 6: Production Hardening &amp; Rigor</small>
+                <small className="text-muted">Production Hardening &amp; System Quality</small>
               </div>
               <ShieldCheck size={18} className="text-emerald-500" />
             </div>

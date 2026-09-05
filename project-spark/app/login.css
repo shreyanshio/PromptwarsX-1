@@ -94,21 +94,6 @@
   gap: 16px;
 }
 
-.nav-eval-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: rgba(226, 150, 60, 0.12);
-  color: var(--primary);
-  border: 1px solid rgba(226, 150, 60, 0.35);
-  padding: 5px 12px;
-  border-radius: 999px;
-}
-
 /* Main Layout Canvas */
 .login-canvas {
   position: relative;
@@ -132,11 +117,13 @@
 }
 
 .dark .login-card-panel {
+  background: #141f1e;
+  border-color: #283a37;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
-/* Guest Evaluator Fast-Pass Card */
-.guest-banner-card {
+/* Instant Demo Mode Card */
+.demo-banner-card {
   background: linear-gradient(135deg, rgba(226, 150, 60, 0.12) 0%, rgba(52, 72, 197, 0.08) 100%);
   border: 1px solid rgba(226, 150, 60, 0.35);
   border-radius: 14px;
@@ -146,14 +133,19 @@
   overflow: hidden;
 }
 
-.guest-banner-header {
+.dark .demo-banner-card {
+  background: linear-gradient(135deg, rgba(240, 169, 75, 0.15) 0%, rgba(127, 145, 255, 0.1) 100%);
+  border-color: rgba(240, 169, 75, 0.35);
+}
+
+.demo-banner-header {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
 }
 
-.guest-pulse-dot {
+.demo-pulse-dot {
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -162,41 +154,32 @@
   animation: pulse 2s infinite;
 }
 
-.guest-badge-title {
+.demo-badge-title {
   flex: 1;
 }
 
-.guest-badge-title strong {
+.demo-badge-title strong {
   display: block;
-  font-size: 0.76rem;
-  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
   color: var(--foreground);
 }
 
-.guest-badge-title small {
+.demo-badge-title small {
   display: block;
   font-size: 0.72rem;
   color: var(--muted);
 }
 
-.pill-tag {
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: var(--primary);
-  color: var(--primary-foreground);
-}
-
-.guest-banner-desc {
-  font-size: 0.82rem;
+.demo-banner-desc {
+  font-size: 0.84rem;
   line-height: 1.45;
   color: var(--foreground);
-  opacity: 0.88;
+  opacity: 0.92;
   margin: 0 0 16px;
 }
 
-.guest-action-button {
+.demo-action-button {
   width: 100%;
   display: flex;
   align-items: center;
@@ -216,7 +199,7 @@
   box-shadow: 0 8px 20px rgba(226, 150, 60, 0.28);
 }
 
-.guest-action-button:hover {
+.demo-action-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(226, 150, 60, 0.38);
 }
@@ -273,6 +256,11 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
+.dark .auth-tab.active {
+  background: #1e2c2a;
+  color: #f3f8f6;
+}
+
 /* Forms */
 .auth-form {
   display: grid;
@@ -327,6 +315,16 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.input-wrap input::placeholder {
+  color: var(--muted);
+}
+
+.dark .input-wrap input {
+  background: #0f1918;
+  color: #f3f8f6;
+  border-color: #283a37;
+}
+
 .input-wrap input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(226, 150, 60, 0.18);
@@ -372,6 +370,7 @@
   font: 500 clamp(2rem, 3.4vw, 2.8rem)/1.08 var(--font-display);
   letter-spacing: -0.03em;
   margin: 0 0 16px;
+  color: var(--foreground);
 }
 
 .showcase-header p {
@@ -391,6 +390,11 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
   position: relative;
   transition: all 0.3s ease;
+}
+
+.dark .showcase-highlight-card {
+  background: #141f1e;
+  border-color: #283a37;
 }
 
 .highlight-top {
@@ -420,6 +424,7 @@
   font: 500 1.1rem var(--font-display);
   margin: 0;
   letter-spacing: -0.01em;
+  color: var(--foreground);
 }
 
 .highlight-sub {
@@ -429,7 +434,7 @@
   margin-top: 2px;
 }
 
-.highlight-score-badge {
+.highlight-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -469,14 +474,14 @@
   width: 38px;
 }
 
-/* 6-Pillar Mini Grid */
-.pillars-grid-mini {
+/* Feature Capabilities Grid */
+.capabilities-grid-mini {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
-.pillar-item-mini {
+.capability-item-mini {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -484,14 +489,14 @@
   border: 1px solid var(--border);
   padding: 10px 14px;
   border-radius: 10px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 600;
+  color: var(--foreground);
 }
 
-.pillar-num {
-  font-family: var(--font-display);
+.capability-icon {
   color: var(--primary);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 900px) {
@@ -509,7 +514,7 @@
   .highlight-title-group {
     text-align: left;
   }
-  .pillars-grid-mini {
+  .capabilities-grid-mini {
     grid-template-columns: 1fr;
     text-align: left;
   }

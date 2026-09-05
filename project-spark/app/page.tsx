@@ -8,35 +8,31 @@ import {
   ChevronDown,
   Compass,
   Menu,
-  Moon,
   Sparkles,
-  Sun,
   WandSparkles,
   X,
-  Zap,
   ShieldCheck,
   Cpu,
   Layers,
-  Award,
-  BookOpen,
 } from 'lucide-react'
 import { ideas } from '@/lib/ideas'
 import { getCurrentUser, UserProfile } from '@/lib/auth'
+import ThemeToggle from '@/components/ThemeToggle'
 
-const featuredIdeas = [...ideas].sort((a, b) => b.match - a.match).slice(0, 3)
+const featuredIdeas = [...ideas].slice(0, 3)
 
 const faqs = [
   {
     q: 'How does ProjectSpark align with university capstone requirements?',
-    a: 'Every project generated adheres to academic defense standards: strict scope boundaries for 1-2 semesters, layered architecture justification, clear separation between Core MVP (P0) and Distinction (P1) features, and pre-compiled viva defense questions.',
+    a: 'Every project blueprint adheres to academic defense standards: strict scope boundaries for 1-2 semesters, layered architecture justification, clear separation between Core MVP and Distinction features, and pre-compiled viva defense questions.',
   },
   {
-    q: 'Can judges and evaluators test the platform without registering?',
-    a: 'Yes! We built a dedicated 1-Click Guest Access mode specifically for Hack2Skill evaluators. You enter immediately with a pre-configured student profile to test the intake, ideas, architecture, and synopsis export.',
+    q: 'Can I explore blueprints without creating an account?',
+    a: 'Yes, you can launch Demo Mode with one click from the sign-in page to explore sample capstone architectures, roadmap timelines, and synopsis exports immediately.',
   },
   {
     q: 'Will the recommended tech stack match what I already know?',
-    a: 'Yes. Our intake matrix analyzes your existing languages and frameworks, builds upon them, and prescribes 1-2 prestigious stretch technologies (like on-device ONNX, zk-SNARKs, or AST parsing) that examiners look for.',
+    a: 'Yes. The intake matrix analyzes your existing languages and frameworks, builds upon them, and prescribes 1-2 prestigious stretch technologies (like on-device ONNX, zk-SNARKs, or AST parsing) that examiners look for.',
   },
   {
     q: 'Can I export a formal project synopsis for my college guide/examiner?',
@@ -45,7 +41,6 @@ const faqs = [
 ]
 
 export default function Home() {
-  const [dark, setDark] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
@@ -58,35 +53,33 @@ export default function Home() {
   }, [])
 
   return (
-    <div className={dark ? 'app-shell dark' : 'app-shell'}>
+    <div className="app-shell">
       <header className="site-nav">
         <Link href="/" className="brand-mark" aria-label="ProjectSpark home">
           <span className="brand-glyph">✦</span> Project<span>Spark</span>
         </Link>
         <nav className={mobileOpen ? 'nav-links mobile-visible' : 'nav-links'} aria-label="Main navigation">
-          <Link href="#pillars">The 6 Pillars</Link>
+          <Link href="#how">How it works</Link>
           <Link href="/explore">Explore ideas</Link>
           <Link href="/dashboard">Dashboard</Link>
           <Link href="#faq">FAQ</Link>
 
           {currentUser ? (
             <Link href="/dashboard" className="nav-user-pill">
-              <span className="user-badge-dot" /> {currentUser.name} ({currentUser.isGuest ? 'Guest' : 'Student'})
+              <span className="user-badge-dot" /> {currentUser.name}
             </Link>
           ) : (
             <Link href="/login" className="nav-login">
-              Log in
+              Sign in
             </Link>
           )}
 
-          <Link href="/login" className="button button-small">
-            Start creating <ArrowRight size={14} />
+          <Link href="/generate" className="button button-small">
+            Start building <ArrowRight size={14} />
           </Link>
         </nav>
         <div className="nav-actions">
-          <button className="icon-button" onClick={() => setDark(!dark)} aria-label="Toggle color theme">
-            {dark ? <Sun size={17} /> : <Moon size={17} />}
-          </button>
+          <ThemeToggle />
           <button className="menu-button" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation">
             {mobileOpen ? <X /> : <Menu />}
           </button>
@@ -94,21 +87,6 @@ export default function Home() {
       </header>
 
       <main>
-        {/* Judge Fast-Pass Banner */}
-        <div className="evaluator-fast-banner">
-          <div className="evaluator-fast-content">
-            <span className="banner-tag">
-              <Zap size={13} className="text-amber-400" /> Hack2Skill Evaluator Quick-Pass
-            </span>
-            <span>
-              Judges can skip signups and jump straight to the 6-pillar capstone architect.
-            </span>
-            <Link href="/login" className="banner-link">
-              Launch Guest Portal <ArrowRight size={13} />
-            </Link>
-          </div>
-        </div>
-
         <section className="hero section-wrap">
           <div className="hero-copy">
             <div className="eyebrow">
@@ -121,14 +99,14 @@ export default function Home() {
             </h1>
             <p>
               ProjectSpark analyzes your interests and technical skills to architect a capstone project
-              worth defending — complete with features, layered tech stacks, a 4-phase roadmap, and an examiner viva kit.
+              worth defending — complete with features, layered tech stacks, a step-by-step roadmap, and an examiner viva kit.
             </p>
             <div className="hero-actions">
-              <Link href="/login" className="button button-primary">
-                Launch Capstone Architect <WandSparkles size={17} />
+              <Link href="/generate" className="button button-primary">
+                Launch Project Architect <WandSparkles size={17} />
               </Link>
-              <Link href="#pillars" className="text-link">
-                See the 6 Pillars <ArrowRight size={16} />
+              <Link href="#how" className="text-link">
+                See how it works <ArrowRight size={16} />
               </Link>
             </div>
             <div className="trust-line">
@@ -148,71 +126,65 @@ export default function Home() {
           <div className="marquee-content">
             <span>Interests &amp; Skills</span>
             <i>✦</i>
-            <span>AI Ideas</span>
+            <span>Capstone Blueprints</span>
             <i>✦</i>
-            <span>P0/P1 Features</span>
+            <span>Core MVP Features</span>
             <i>✦</i>
             <span>Layered Stacks</span>
             <i>✦</i>
-            <span>Roadmap Phases</span>
+            <span>Milestone Roadmaps</span>
             <i>✦</i>
-            <span>Viva Defense Kit</span>
+            <span>Viva Defense Prep</span>
             <i>✦</i>
           </div>
         </section>
 
-        {/* The 6 Pillars Section */}
-        <section id="pillars" className="section-wrap how-section">
+        {/* How it works Section */}
+        <section id="how" className="section-wrap how-section">
           <div className="section-intro">
             <div>
-              <div className="eyebrow">The 6 Problem Statement Pillars</div>
+              <div className="eyebrow">From Concept to Defense</div>
               <h2>
-                Engineered from intake
+                A Complete Architecture
                 <br />
-                to final viva defense.
+                For Your Capstone Build.
               </h2>
             </div>
             <p>
-              We solved the 6 core challenges students face when turning a raw spark into an academically
-              defensible, industry-ready engineering project.
+              Everything you need to turn raw thoughts into an academically defensible,
+              production-ready engineering submission.
             </p>
           </div>
-          <div className="process-grid-six">
+          <div className="process-grid">
             <ProcessCard
-              num="01"
               icon={<Compass />}
-              title="Interests &amp; Skills Intake"
-              text="Map domain passions with verified technical competencies across frontend, backend, AI/ML, and cloud."
+              title="Skills &amp; Interest Profile"
+              text="Map your domain passions with verified technical competencies across frontend, backend, AI/ML, and cloud."
             />
             <ProcessCard
-              num="02"
               icon={<Sparkles />}
-              title="Matched Capstone Ideas"
-              text="AI-synthesized project concepts tailored with exact match scores (%) and transparent reasoning."
+              title="Tailored Project Discovery"
+              text="Discover feasible, novel capstone concepts matched to your background, timeframe, and academic ambition."
             />
             <ProcessCard
-              num="03"
               icon={<Layers />}
-              title="Features Guidance"
-              text="Clear separation between Core Viva MVP (P0) to pass evaluation and Advanced Distinctions (P1) for top marks."
+              title="Scope &amp; Feature Breakdown"
+              text="Clear separation between Core MVP to pass evaluation and Advanced Distinctions for top grades."
             />
             <ProcessCard
-              num="04"
               icon={<Cpu />}
-              title="Technologies Guidance"
-              text="Prescriptive, layered stack choices with architectural rationale justifying why each technology belongs."
+              title="Layered Tech Stack"
+              text="Prescriptive architecture recommendations with clear rationale justifying why each technology is used."
             />
             <ProcessCard
-              num="05"
               icon={<WandSparkles />}
-              title="4-Phase Build Roadmap"
-              text="Actionable week-by-week timeline with concrete review deliverables and internal viva milestones."
+              title="Development Roadmap"
+              text="Actionable phase-by-phase timeline with concrete review deliverables and internal viva milestones."
             />
             <ProcessCard
-              num="06"
               icon={<ShieldCheck />}
-              title="Practical Improvements &amp; Viva Kit"
-              text="Production hardening (security, edge cases, offline sync) plus real examiner questions &amp; model answers."
+              title="Production Hardening &amp; Viva Kit"
+              text="Production guidelines (security, edge cases, offline resilience) plus examiner questions &amp; answers."
             />
           </div>
         </section>
@@ -222,7 +194,7 @@ export default function Home() {
           <div className="section-wrap">
             <div className="section-intro compact">
               <div>
-                <div className="eyebrow">Calibrated for Capstone Viva</div>
+                <div className="eyebrow">Curated Capstones</div>
                 <h2>
                   Pre-Engineered Ideas
                   <br />
@@ -238,7 +210,7 @@ export default function Home() {
                 <article key={idea.slug} className={`idea-card accent-${idea.accent}`}>
                   <div className="idea-meta">
                     <span className="tag">{idea.category}</span>
-                    <span className="idea-score">{idea.match}% fit</span>
+                    <span className="idea-score">{idea.difficulty}</span>
                   </div>
                   <h3>{idea.title}</h3>
                   <p>{idea.tagline}</p>
@@ -343,10 +315,10 @@ export default function Home() {
         <Link href="/" className="brand-mark">
           <span className="brand-glyph">✦</span> Project<span>Spark</span>
         </Link>
-        <span>Built for the final-year builder. Calibrated for 95%+ hackathon evaluation.</span>
+        <span>Built for final-year engineering builders and capstone defenses.</span>
         <div>
           <Link href="/explore">Explore</Link>
-          <Link href="/login">Guest Access</Link>
+          <Link href="/login">Demo Access</Link>
           <Link href="/dashboard">Dashboard</Link>
         </div>
       </footer>
@@ -355,12 +327,10 @@ export default function Home() {
 }
 
 function ProcessCard({
-  num,
   icon,
   title,
   text,
 }: {
-  num: string
   icon: React.ReactNode
   title: string
   text: string
@@ -368,7 +338,6 @@ function ProcessCard({
   return (
     <article className="process-card">
       <div className="process-top">
-        <span>{num}</span>
         <div className="process-icon">{icon}</div>
       </div>
       <h3>{title}</h3>
@@ -389,7 +358,7 @@ function HeroScene() {
       </div>
       <div className="scene-card card-front">
         <div className="card-label">
-          <span className="pulse-dot" /> 6 PILLARS GENERATED
+          <span className="pulse-dot" /> CAPSTONE BLUEPRINT
         </div>
         <h3>
           AttendAI
@@ -402,9 +371,9 @@ function HeroScene() {
         </div>
         <small>Phase 02 of 04 · Recognition Engine</small>
       </div>
-      <div className="float-badge badge-top">P0 MVP + P1 Distinction</div>
+      <div className="float-badge badge-top">Core MVP + Distinction</div>
       <div className="float-badge badge-side">
-        <Sparkles size={15} /> 96% Match Fit
+        <Sparkles size={15} /> Recommended Stack
       </div>
     </div>
   )
