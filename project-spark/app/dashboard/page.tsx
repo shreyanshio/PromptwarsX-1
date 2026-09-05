@@ -18,25 +18,53 @@ import {
 import { getIdea, ideas } from '@/lib/ideas'
 import { getCurrentUser, UserProfile, GUEST_USER } from '@/lib/auth'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { apiClient } from '@/lib/api-client'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserProfile>(GUEST_USER)
   const [activeSlug, setActiveSlug] = useState('attendai')
   const [completedPhases, setCompletedPhases] = useState<number[]>([0, 1])
+  const [projectList, setProjectList] = useState(ideas)
 
   useEffect(() => {
     const existing = getCurrentUser()
     if (existing) setUser(existing)
+
+    async function loadDashboard() {
+      try {
+        const res = await apiClient.getProjects()
+        if (res?.projects && res.projects.length > 0) {
+          const combined = [...res.projects, ...ideas.filter((i) => !res.projects.some((p) => p.slug === i.slug))]
+          setProjectList(combined as unknown as typeof ideas)
+        }
+      } catch {
+        // offline fallback
+      }
+    }
+
+    loadDashboard()
   }, [])
 
-  const active = getIdea(activeSlug) || ideas[0]
+  const active = projectList.find((p) => p.slug === activeSlug) || getIdea(activeSlug) || ideas[0]
   const totalPhases = active.roadmap.length
   const progressPct = Math.round((completedPhases.length / totalPhases) * 100)
 
-  function togglePhase(idx: number) {
-    setCompletedPhases((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
-    )
+  async function togglePhase(idx: number) {
+    const isChecked = completedPhases.includes(idx)
+    const nextPhases = isChecked
+      ? completedPhases.filter((i) => i !== idx)
+      : [...completedPhases, idx]
+    setCompletedPhases(nextPhases)
+
+    try {
+      await apiClient.updateRoadmapTask(
+        active.slug,
+        `phase-${idx}`,
+        isChecked ? 'TODO' : 'COMPLETED'
+      )
+    } catch {
+      // offline fallback
+    }
   }
 
   // Viva Readiness score calculation
@@ -192,7 +220,7 @@ export default function DashboardPage() {
               <FileText size={14} /> Other Matched Capstones
             </div>
             <div className="saved-sparks-list">
-              {ideas.map((item) => (
+              {projectList.map((item) => (
                 <div key={item.slug} className="saved-spark-row">
                   <div>
                     <strong className="block text-sm">{item.title}</strong>

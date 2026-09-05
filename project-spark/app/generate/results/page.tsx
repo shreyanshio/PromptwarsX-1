@@ -18,15 +18,53 @@ import { ideas, Idea } from '@/lib/ideas'
 import { getCurrentUser, UserProfile } from '@/lib/auth'
 import ThemeToggle from '@/components/ThemeToggle'
 
+import { apiClient } from '@/lib/api-client'
+
 export default function ResultsPage() {
   const [user, setUser] = useState<UserProfile | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All')
+  const [projectList, setProjectList] = useState<Idea[]>(ideas)
   const [savedSlugs, setSavedSlugs] = useState<string[]>(['attendai'])
 
   useEffect(() => {
     const existing = getCurrentUser()
     if (existing) setUser(existing)
+
+    // Load any newly Gemini-generated projects from localStorage or backend
+    async function loadProjects() {
+      try {
+        const stored = localStorage.getItem('projectspark_generated_projects')
+        let initialList = [...ideas]
+        if (stored) {
+          const generated = JSON.parse(stored) as Idea[]
+          if (Array.isArray(generated) && generated.length > 0) {
+            // Prepend newly generated ideas
+            const existingSlugs = new Set(initialList.map((i) => i.slug))
+            const uniqueGen = generated.filter((g) => !existingSlugs.has(g.slug))
+            initialList = [...uniqueGen, ...initialList]
+          }
+        }
+
+        // Also attempt to fetch from backend
+        try {
+          const backendRes = await apiClient.getProjects()
+          if (backendRes?.projects?.length > 0) {
+            const backendSlugs = new Set(backendRes.projects.map((p) => p.slug))
+            const remaining = initialList.filter((i) => !backendSlugs.has(i.slug))
+            initialList = [...(backendRes.projects as unknown as Idea[]), ...remaining]
+          }
+        } catch {
+          // Backend offline fallback
+        }
+
+        setProjectList(initialList)
+      } catch {
+        // fallback
+      }
+    }
+
+    loadProjects()
 
     try {
       const saved = localStorage.getItem('projectspark_saved_slugs')
@@ -36,22 +74,22 @@ export default function ResultsPage() {
     }
   }, [])
 
-  function toggleSave(slug: string) {
-    setSavedSlugs((prev) => {
-      const next = prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
-      try {
-        localStorage.setItem('projectspark_saved_slugs', JSON.stringify(next))
-      } catch {
-        // ignore
-      }
-      return next
-    })
+  async function toggleSave(slug: string) {
+    const isCurrentlySaved = savedSlugs.includes(slug)
+    const next = isCurrentlySaved ? savedSlugs.filter((s) => s !== slug) : [...savedSlugs, slug]
+    setSavedSlugs(next)
+    try {
+      localStorage.setItem('projectspark_saved_slugs', JSON.stringify(next))
+      await apiClient.saveProject(slug, !isCurrentlySaved)
+    } catch {
+      // ignore
+    }
   }
 
   const categories = ['All', 'Computer Vision & Edge AI', 'Healthcare & NLP', 'Cybersecurity & Web3', 'IoT & ClimateTech', 'DevTools & AI Agents']
   const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
-  const filteredIdeas = ideas.filter((item) => {
+  const filteredIdeas = projectList.filter((item) => {
     const matchesCat = selectedCategory === 'All' || item.category === selectedCategory
     const matchesDiff = selectedDifficulty === 'All' || item.difficulty === selectedDifficulty
     return matchesCat && matchesDiff

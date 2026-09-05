@@ -22,17 +22,69 @@ import {
 } from 'lucide-react'
 import { Idea } from '@/lib/ideas'
 
+import { apiClient } from '@/lib/api-client'
+
 export default function BlueprintView({ idea }: { idea: Idea }) {
   const [activeTab, setActiveTab] = useState<'all' | 'p0' | 'p1'>('all')
   const [completedPhases, setCompletedPhases] = useState<number[]>([0])
   const [openVivaIndex, setOpenVivaIndex] = useState<number | null>(0)
   const [isSaved, setIsSaved] = useState(true)
   const [downloadNotice, setDownloadNotice] = useState(false)
+  const [improvements, setImprovements] = useState(idea.improvementsDetailed)
+  const [improvePrompt, setImprovePrompt] = useState('')
+  const [isImproving, setIsImproving] = useState(false)
+  const [improveFeedback, setImproveFeedback] = useState<string | null>(null)
 
-  function togglePhase(index: number) {
-    setCompletedPhases((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    )
+  async function togglePhase(index: number) {
+    const isChecked = completedPhases.includes(index)
+    const nextPhases = isChecked
+      ? completedPhases.filter((i) => i !== index)
+      : [...completedPhases, index]
+    setCompletedPhases(nextPhases)
+
+    try {
+      await apiClient.updateRoadmapTask(
+        idea.slug,
+        `phase-${index}`,
+        isChecked ? 'TODO' : 'COMPLETED'
+      )
+    } catch {
+      // offline fallback
+    }
+  }
+
+  async function toggleSave() {
+    const nextSaved = !isSaved
+    setIsSaved(nextSaved)
+    try {
+      await apiClient.saveProject(idea.slug, nextSaved)
+    } catch {
+      // offline fallback
+    }
+  }
+
+  async function handleImproveSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!improvePrompt.trim()) return
+
+    setIsImproving(true)
+    setImproveFeedback(null)
+
+    try {
+      const res = await apiClient.improveProject(idea.slug, improvePrompt.trim())
+      const newItem = {
+        area: (res.difficulty === 'Advanced' ? 'Academic Rigor' : 'Scalability') as 'Academic Rigor' | 'Scalability',
+        suggestion: `${res.improvement}: ${res.whyItHelps}`,
+        implementationTip: res.implementationSteps.join('; '),
+      }
+      setImprovements((prev) => [newItem, ...prev])
+      setImproveFeedback(`Gemini applied: "${res.improvement}" (${res.expectedImpact})`)
+      setImprovePrompt('')
+    } catch (err) {
+      setImproveFeedback('Could not connect to Gemini service. Check API key.')
+    } finally {
+      setIsImproving(false)
+    }
   }
 
   function handleDownloadSynopsis() {
@@ -177,6 +229,16 @@ ${idea.vivaQuestions
           </div>
 
           <div className="detail-action-buttons">
+            <button
+              type="button"
+              onClick={toggleSave}
+              className={`button button-secondary ${isSaved ? 'text-amber-500' : ''}`}
+              title="Save this capstone to your dashboard"
+            >
+              <Bookmark size={15} className={isSaved ? 'fill-current text-amber-500' : ''} />
+              <span>{isSaved ? 'Saved to Sparks' : 'Save Project'}</span>
+            </button>
+
             <button
               type="button"
               onClick={handleDownloadSynopsis}
@@ -360,18 +422,57 @@ ${idea.vivaQuestions
             </div>
           </div>
 
-          {/* Practical Improvements & Hardening */}
+          {/* Practical Improvements & Hardening with Gemini Refinement */}
           <div className="improvements-card-panel mt-6">
             <div className="panel-header">
               <div>
-                <h2>Practical Improvements</h2>
-                <small className="text-muted">Production Hardening &amp; System Quality</small>
+                <h2>Practical Improvements &amp; Refinements</h2>
+                <small className="text-muted">Production Hardening &amp; Gemini Scope Adjustment</small>
               </div>
               <ShieldCheck size={18} className="text-emerald-500" />
             </div>
 
+            {/* AI Refinement Input Form */}
+            <form onSubmit={handleImproveSubmit} className="mb-4">
+              <label className="text-xs font-semibold text-muted block mb-1">
+                Ask Gemini to Refine or Adjust Scope (e.g. &ldquo;Make it easier for 6 weeks&rdquo;, &ldquo;Add offline resilience&rdquo;)
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={improvePrompt}
+                  onChange={(e) => setImprovePrompt(e.target.value)}
+                  placeholder="Enter scope change or technical improvement..."
+                  className="flex-1 bg-surface border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary"
+                  disabled={isImproving}
+                />
+                <button
+                  type="submit"
+                  disabled={isImproving || !improvePrompt.trim()}
+                  className="button button-primary button-small whitespace-nowrap"
+                >
+                  {isImproving ? (
+                    <>
+                      <Sparkles size={14} className="animate-spin text-amber-300" />
+                      <span>Refining...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={14} />
+                      <span>Refine</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              {improveFeedback && (
+                <div className="mt-2 text-xs text-primary font-medium">
+                  {improveFeedback}
+                </div>
+              )}
+            </form>
+
             <div className="improvements-grid-stacked">
-              {idea.improvementsDetailed.map((imp) => (
+              {improvements.map((imp) => (
                 <div key={imp.suggestion} className="improvement-item-box">
                   <div className="improvement-area-tag">{imp.area}</div>
                   <p className="improvement-sugg">

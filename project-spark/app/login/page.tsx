@@ -19,6 +19,7 @@ import {
   Layers,
 } from 'lucide-react'
 import { GUEST_USER, setCurrentUser, getCurrentUser, UserProfile } from '@/lib/auth'
+import { apiClient, setClientToken } from '@/lib/api-client'
 import ThemeToggle from '@/components/ThemeToggle'
 
 export default function LoginPage() {
@@ -68,12 +69,19 @@ export default function LoginPage() {
     return () => clearInterval(interval)
   }, [highlights.length])
 
-  function handleGuestAccess() {
+  async function handleGuestAccess() {
     setIsLoading(true)
-    setTimeout(() => {
+    try {
+      await apiClient.loginDemo()
       setCurrentUser(GUEST_USER)
       router.push('/dashboard')
-    }, 500)
+    } catch {
+      // Fallback to local session
+      setCurrentUser(GUEST_USER)
+      router.push('/dashboard')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -88,10 +96,11 @@ export default function LoginPage() {
       avatar: (name.trim() || 'SB').substring(0, 2).toUpperCase(),
       isGuest: false,
     }
+    setClientToken(`session-${Date.now()}`)
+    setCurrentUser(user)
     setTimeout(() => {
-      setCurrentUser(user)
       router.push('/generate')
-    }, 600)
+    }, 400)
   }
 
   return (

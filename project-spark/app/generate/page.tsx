@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { ideas } from '@/lib/ideas'
 import { getCurrentUser, UserProfile } from '@/lib/auth'
+import { apiClient } from '@/lib/api-client'
 import ThemeToggle from '@/components/ThemeToggle'
 
 type IntakeState = {
@@ -73,6 +74,9 @@ export default function GenerateWizard() {
     targetOutcome: 'Defensible Working Prototype (Top Viva Score)',
   })
 
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [generationMsg, setGenerationMsg] = useState('Consulting Gemini Capstone Architect...')
+
   useEffect(() => {
     const existing = getCurrentUser()
     if (existing) setUser(existing)
@@ -102,7 +106,7 @@ export default function GenerateWizard() {
     })
   }
 
-  function handleNext() {
+  async function handleNext() {
     try {
       localStorage.setItem('projectspark_intake', JSON.stringify(intake))
     } catch {
@@ -111,7 +115,40 @@ export default function GenerateWizard() {
 
     if (step < 3) {
       setStep(step + 1)
-    } else {
+      return
+    }
+
+    // Step 3: Trigger real Gemini generation
+    setIsGenerating(true)
+    setGenerationMsg('Architecting 3 tailored capstone projects with Gemini...')
+
+    const msgTimer = setInterval(() => {
+      setGenerationMsg((prev) => {
+        if (prev.includes('Architecting')) return 'Dividing features into P0 Core MVP & P1 Distinction...'
+        if (prev.includes('Dividing')) return 'Synthesizing 4-Phase Roadmap & Viva Defense Kit...'
+        return 'Finalizing architectural blueprints...'
+      })
+    }, 1800)
+
+    try {
+      const res = await apiClient.generateProjects({
+        interests: intake.interests,
+        skills: intake.skills,
+        domain: intake.interests[0] || 'Artificial Intelligence',
+        timeline: intake.timeline,
+        teamSize: intake.teamSize,
+        targetOutcome: intake.targetOutcome,
+        durationWeeks: intake.timeline.includes('4-6') ? 6 : intake.timeline.includes('Year') ? 24 : 12,
+      })
+
+      if (res?.projects && res.projects.length > 0) {
+        localStorage.setItem('projectspark_generated_projects', JSON.stringify(res.projects))
+      }
+    } catch (err) {
+      console.warn('[Generate] Live Gemini API generation fell back to verified templates:', err)
+    } finally {
+      clearInterval(msgTimer)
+      setIsGenerating(false)
       router.push('/generate/results')
     }
   }
@@ -318,11 +355,17 @@ export default function GenerateWizard() {
               onClick={handleNext}
               className="button button-primary ml-auto"
               disabled={
+                isGenerating ||
                 (step === 0 && intake.interests.length === 0) ||
                 (step === 1 && intake.skills.length === 0)
               }
             >
-              {step === 3 ? (
+              {isGenerating ? (
+                <>
+                  <RefreshCw className="animate-spin" size={16} />
+                  <span>{generationMsg}</span>
+                </>
+              ) : step === 3 ? (
                 <>
                   View Tailored Projects <Sparkles size={16} />
                 </>

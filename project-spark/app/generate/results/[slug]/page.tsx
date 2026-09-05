@@ -1,10 +1,14 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { ArrowRight } from 'lucide-react'
-import { getIdea, ideas } from '@/lib/ideas'
+import { getIdea, ideas, Idea } from '@/lib/ideas'
+import { getProjectById } from '@/services/project-service'
+import { DEMO_USER_UID } from '@/lib/auth-server'
 import BlueprintView from '@/components/BlueprintView'
 
 import ThemeToggle from '@/components/ThemeToggle'
+
+export const dynamicParams = true
 
 export function generateStaticParams() {
   return ideas.map((idea) => ({ slug: idea.slug }))
@@ -16,7 +20,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const idea = getIdea(slug)
+  let idea = getIdea(slug)
+  if (!idea) {
+    try {
+      idea = (await getProjectById(DEMO_USER_UID, slug)) as unknown as Idea
+    } catch {
+      // ignore
+    }
+  }
   if (!idea) return {}
   return {
     title: `${idea.title} — Capstone Architecture & Viva Defense Blueprint`,
@@ -30,7 +41,15 @@ export default async function IdeaDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const idea = getIdea(slug)
+  let idea = getIdea(slug)
+
+  if (!idea) {
+    try {
+      idea = (await getProjectById(DEMO_USER_UID, slug)) as unknown as Idea
+    } catch {
+      // ignore
+    }
+  }
 
   if (!idea) {
     return (
