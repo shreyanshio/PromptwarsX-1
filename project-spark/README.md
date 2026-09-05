@@ -98,10 +98,14 @@ npm run build
 
 ---
 
-## 📂 Documentation Directory
+---
 
-- [PROBLEM_STATEMENT.md](./PROBLEM_STATEMENT.md) — Requirements extraction, traceability matrix, and rubric mapping.
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — High-level architecture, data flows, and Phase 2 backend plan.
-- [GOOGLE_SERVICES.md](./GOOGLE_SERVICES.md) — Google Gemini AI integration and Cloud Run deployment plan.
-- [TESTING.md](./TESTING.md) — Automated build proofs, test strategy, and manual verification checklists.
-- [DEMO_FLOW.md](./DEMO_FLOW.md) — 90-second judge presentation script.
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Frontend**: React 19, Tailwind CSS v4, Lucide React
+- **AI Core**: Google Gemini 2.5 Flash (`@google/genai`)
+- **Backend & Auth**: Next.js API Route Handlers, Firebase Auth, Cloud Firestore
+- **Type Safety**: TypeScript Strict Mode, Zod v4 schemas
+- **Testing**: Vitest with unit & integration test coverage
+
